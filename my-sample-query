@@ -1,0 +1,16 @@
+-- this is my sample query to find the amount of inactive user/dealer as of 7/3/24 in my e-wallet application
+
+SELECT DISTINCT tl.`sender_id` AS UserID, u.`hp` AS HP, w.`balance` AS WalletBalance
+FROM users u
+JOIN TransactionLogs tl ON u.`id` = tl.`sender_id`
+JOIN wallets w ON u.`id` = w.`user_id`
+WHERE tl.`sender_id` NOT IN (
+				SELECT DISTINCT tl.sender_id 
+				FROM transaction_logs tl
+				JOIN users u ON u.`id` = tl.`sender_id`
+				WHERE tl.created_at BETWEEN '2023-01-01 00:00:00' AND '2024-03-07 23:59:59'
+				AND tl.status = "Y" -- Y ok /N fail
+				AND tl.sender_role = '3' -- 3 user /7 dealer 
+)
+AND w.`user_type`= "normal" -- normal/card
+AND w.`balance` = 0;
