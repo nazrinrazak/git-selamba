@@ -6,7 +6,7 @@ JOIN TransactionLogs tl ON u.`id` = tl.`sender_id`
 JOIN wallets w ON u.`id` = w.`user_id`
 WHERE tl.`sender_id` NOT IN (
 				SELECT DISTINCT tl.sender_id 
-				FROM transaction_logs tl
+				FROM TransactionLogs tl
 				JOIN users u ON u.`id` = tl.`sender_id`
 				WHERE tl.created_at BETWEEN '2023-01-01 00:00:00' AND '2024-03-07 23:59:59'
 				AND tl.status = "Y" -- Y ok /N fail
